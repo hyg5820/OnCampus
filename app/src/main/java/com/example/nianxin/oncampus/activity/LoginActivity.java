@@ -33,9 +33,13 @@ import android.widget.TextView;
 
 import com.example.nianxin.oncampus.ActivityCollector;
 import com.example.nianxin.oncampus.R;
+import com.example.nianxin.oncampus.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -326,17 +330,20 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // 帐户存在, 如果密码匹配, 则返回 true。
-                   // return pieces[1].equals(mPassword);
-                    return true;
+            User user = new User();
+            user.setUsername(mEmail);
+            user.setPassword(mPassword);
+            user.login(new SaveListener<User>() {
+                @Override
+                public void done(User user, BmobException e) {
+                    if (e == null) {//登陆成功
+                        ActivityCollector.removeActivity(LoginActivity.this);
+                        MainActivity.actionStart(LoginActivity.this);
+                    } else {//登陆失败
+
+                    }
                 }
-            }
-
-            // TODO: 在这里注册新帐户。
-
+            });
             return true;
         }
 
@@ -344,7 +351,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
+            /*
             if (success) {
                 //finish();
                 ActivityCollector.removeActivity(LoginActivity.this);
@@ -352,7 +359,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
-            }
+            }*/
         }
 
         @Override

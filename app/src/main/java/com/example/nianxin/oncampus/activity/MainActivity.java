@@ -12,8 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.nianxin.oncampus.R;
+import com.example.nianxin.oncampus.model.User;
 
 public class MainActivity extends BaseActivity {
+
+    /**
+     * 启动活动方法
+     * @author nianxin
+     * @time 2018/4/7 16:51
+     */
+    public static void actionStart(Context context){
+        Intent intent = new Intent(context,MainActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
